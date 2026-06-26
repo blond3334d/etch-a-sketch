@@ -1,3 +1,5 @@
-const boxContainer = document.getElementById("container");
+const boxContainer = document.querySelector("#container");
 
-const div = boxContainer.createElement("div");
+const grid = document.createElement("div");
+
+boxContainer.appendChild(grid);
