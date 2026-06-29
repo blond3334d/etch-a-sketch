@@ -8,8 +8,10 @@
     <link rel="stylesheet" href="style.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Jersey+10&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jersey+10&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
 
@@ -17,7 +19,11 @@
         <h1>etch <br>a <br> sketch</h1>
         <div class="container"></div>
         <div class="panel">
-            <input type="text" name="gridSize" id="gridSize" placeholder="Change grid size">
+            <div class="panelContainer">
+                <button id="resetBtn"><i class="fa-solid fa-arrow-rotate-right"></i></button>
+                <button id="sizeBtn"><i class="fa-solid fa-crop-simple"></i></button>
+                <button id="colorBtn"><i class="fa-solid fa-paintbrush"></i></button>
+            </div>
         </div>
     </div>
 
