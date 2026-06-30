@@ -1,10 +1,31 @@
 const boxContainer = document.querySelector(".container");
 const changeSize = document.querySelector("#sizeBtn");
-const colorBtn = document.querySelector("#colorBtn")
+const colorBtn = document.querySelector("#colorBtn");
+const closeColorBtn = document.querySelector("#colorBtn");
+const resetBtn = document.querySelector("#resetBtn");
 const square = document.querySelectorAll(".square");
 const row = document.querySelectorAll(".row")
+let currentSize = 16;
 
-createGrid(16);
+createGrid(currentSize);
+
+function createGrid(size) {
+    boxContainer.innerHTML = "";
+    for (let row = 0; row < size; row++) {
+        const row = document.createElement('div');
+        row.setAttribute('class', 'row');
+
+        for (let square = 0; square < size; square++) {
+            const singleSquare = document.createElement('div');
+            singleSquare.setAttribute('class', 'square');
+
+            singleSquare.addEventListener("mouseover", incrementGridOpacity);
+
+            row.appendChild(singleSquare);
+        }
+        boxContainer.appendChild(row);
+    }
+};
 
 changeSize.addEventListener("click", () => {
     let inputPrompt = prompt("Change the grid size (1-100):", 16);
@@ -14,48 +35,50 @@ changeSize.addEventListener("click", () => {
     }
 
     let userInput = Number(inputPrompt);
-    createGrid
-(userInput);
-});
+    createGrid(userInput);
 
-function createGrid(size) {
-    boxContainer.innerHTML = "";
-    for (let row = 0; row < size; row++) {
-        const grid = document.createElement('div');
-        grid.setAttribute('class', 'row');
-    for (let square = 0; square < size; square++) {
-        const square = document.createElement('div');
-        square.setAttribute('class', 'square');
-        grid.appendChild(square);
-    }
-        boxContainer.appendChild(grid);
+    currentSize = userInput;
+});
+ 
+let currentMode = "grayscale";
+
+function switchColor() {
+    colorBtn.addEventListener("click", () => {
+        if (currentMode === "grayscale") {
+            currentMode = "rainbow";
+            colorBtn.classList.add("active");
+        } else {
+            currentMode = "grayscale";
+            colorBtn.classList.remove("active");
+        }
+    })
+
+    return currentMode;
+}
+
+switchColor();
+
+function incrementGridOpacity() {
+    const currentOpacity = parseFloat(
+        window.getComputedStyle(this).getPropertyValue("--grid-opacity")
+    )
+
+    let colorPick = "";
+    const addOpacity = Math.min(currentOpacity + 0.1, 1);
+
+    if (currentMode === "grayscale") {
+        colorPick = `rgba(0, 0, 0, ${addOpacity})`;
+        this.style.setProperty("--grid-opacity", addOpacity);
+        this.style.setProperty("background", colorPick);
+    } else if (currentMode === "rainbow") {
+        const rgbColors = ['255, 0, 0', '255, 127, 0', '255, 255, 0', '0, 255, 0', '0, 0, 255', '75, 0, 130', '148, 0, 211'];
+        let rgbRandom = rgbColors[Math.floor(Math.random() * rgbColors.length)];
+        colorPick = `rgba(${rgbRandom}, ${addOpacity})`;
+        this.style.setProperty("--grid-opacity", addOpacity);
+        this.style.setProperty("background", colorPick);
     }
 };
 
-const setColor = (e) => {
-    colorPick = rgb(0, 0, 0);
-    e.style.backgroundColor = colorPick;
-
-    if (e.style.opacity <= 0.9) {
-        e.style.opacity = +e.style.opacity + 0.1;
-    }
-}
-
-square.forEach((e) => {
-    e.addEventListener("mouseover", setColor(e));
-})
-
-
-
-
-/*
-function incrementGridOpacity() {
-    const currentOpacity = parseFloat(
-        getComputedStyle(this).getPropertyValue("--grid-opacity")
-    )
-    
-    console.log("Current opacity: ", currentOpacity);
-    const opacity = Math.min(currentOpacity + 0.1, 1);
-
-    this.style.setProperty("--grid-opacity", opacity);
-} */
+resetBtn.addEventListener("click", () => {
+    createGrid(currentSize);
+});
